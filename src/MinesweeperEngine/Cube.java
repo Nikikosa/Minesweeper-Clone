@@ -327,4 +327,5 @@ public class Cube extends JPanel implements ActionListener{
 			}
 		}
 	}
+	
 }
