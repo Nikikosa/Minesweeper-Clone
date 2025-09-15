@@ -195,7 +195,6 @@ public class gameBoard extends JFrame {
 		playAgain.setText("Play Again?");
 		playAgain.setForeground(Color.WHITE);
 		playAgain.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		//playAgain.setIcon(playAgainPic);
 		playAgain.setBackground(new Color(0,0,0,100));
 		playAgain.setOpaque(false);
 		playAgain.setBounds(140, 680, 240, 120);
@@ -254,7 +253,6 @@ public class gameBoard extends JFrame {
 		}
 		
 		if (counter == bombs) {
-			
 			game.win();
 		}
 	}

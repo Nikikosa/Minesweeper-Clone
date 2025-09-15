@@ -32,5 +32,4 @@ public class game {
 	public static void win() {
 		mineSweeper.win();
 	}
-
 }
