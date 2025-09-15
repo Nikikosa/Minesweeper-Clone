@@ -14,12 +14,10 @@ public class Cube extends JPanel implements ActionListener{
 	public static int numOfBombs;
 	public static int flags;
 	private  Cube[] neighbors = new Cube[8];
-	
 	protected int iD;
 	protected JButton button;
 	protected JLabel label;
 	protected static ImageIcon cubeImage = new ImageIcon("MineImages/Cell_Image.png");
-	//protected static ImageIcon cubeImage = new ImageIcon("MineImages/Test.png");
 	protected static ImageIcon one = new ImageIcon("MineImages/1.png");
 	protected static ImageIcon two = new ImageIcon("MineImages/2.png");
 	protected static ImageIcon three = new ImageIcon("MineImages/3.png");
@@ -42,9 +40,7 @@ public class Cube extends JPanel implements ActionListener{
 	protected static gameBoard board;
 	protected static int uncoveredCells=0;
 
-	public Cube(int x, int y) {
-		//System.out.println(cubeID);
-		
+	public Cube(int x, int y) {		
 		iD=cubeID;
 		cubeID++;
 		px=x;

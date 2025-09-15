@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 public class gameBoard extends JFrame {
-	protected int width = 536, height = 1049,  x=20, y=40;
+	protected int width, height,  x=20, y=40;
 	protected static int difficulty =1;      
 	protected static Cube[][] cells = new Cube[24][12];
 	protected Cube alpha;
@@ -40,28 +41,23 @@ public class gameBoard extends JFrame {
 	
 	
 	public gameBoard() {
-		Border border = BorderFactory.createLineBorder(Color.white);
-		
-		
+		this.width = 536;
+		this.height = 1049;
+		//Border border = BorderFactory.createLineBorder(Color.white);
 		setTitle("Nikikosas Minesweeper");	
 		setIconImage(bombImage2.getImage());
-		setSize(width, height);
+		setSize(this.width, this.height);
 		setLayout(null);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
-		
 		addSidePanels();
-		
-		
-		 optionScreen();
-		
-		 setVisible(true);
+		optionScreen();		
+		setVisible(true);
 		
 	}
 	public void optionScreen() {
 		this.setGlassPane(new JComponent() {
-			
 			protected void paintComponent(Graphics g) {
 				g.setColor(new Color(0,0,0, 220)); 		// 150 
 				g.fillRect(0, 0, width, height);
@@ -147,7 +143,6 @@ public class gameBoard extends JFrame {
 		play.setText("Play");
 		play.setForeground(Color.WHITE);
 		play.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		//play.setIcon(playPic);
 		play.setBackground(new Color(0,0,0,100));
 		play.setOpaque(false);
 		play.setBounds(140, 720, 240, 120);
@@ -156,7 +151,6 @@ public class gameBoard extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == play) {
-					//clearBoard();
 					makeBoard();
 					playGame();
 					glassPane.setVisible(false);
@@ -175,17 +169,9 @@ public class gameBoard extends JFrame {
 	
 	public void playGame() {
 		addBombs();
-		//bar = new ProgressBombs(50);
-		//cells[0][0].setBar(bar);
 		cells[0][0].setBoard(this);
-		cells[0][0].resetCounter();
-		//add(bar);
-		
+		cells[0][0].resetCounter();		
 		setTypes();
-		
-		
-		
-		
 	}
 	
 	@SuppressWarnings("serial")
@@ -318,8 +304,6 @@ public class gameBoard extends JFrame {
 		
 		glassPane.add(label);
 		glassPane.add(playAgain);
-		
-		//add(glassPane);
 	}
 	
 	public void uncoverAll() {
@@ -399,49 +383,23 @@ public class gameBoard extends JFrame {
 		}
 	}
 	public void addSidePanels() {
-		JLabel leftS = new JLabel();
 		Border border = BorderFactory.createLineBorder(Color.darkGray);
-		leftS.setBackground(Color.gray);
-		leftS.setBorder(border);
-		leftS.setBounds(0,0,20,1049);
-		leftS.setLayout(null);
-		leftS.setIcon(construct);
-		
-		JLabel rightS = new JLabel();
-		rightS.setBackground(Color.gray);
-		rightS.setBorder(border);
-		rightS.setBounds(500,0,20,1049);
-		rightS.setLayout(null);
-		rightS.setIcon(construct2);
-		
-		JLabel bottom = new JLabel();
-		bottom.setBackground(Color.gray);
-		bottom.setBorder(border);
-		bottom.setBounds(20,1000,496,10);
-		bottom.setLayout(null);
-		bottom.setIcon(topPanel);
-		
-		/*
-		JLabel top = new JLabel();
-		top.setBackground(Color.gray);
-		top.setBorder(border);
-		top.setBounds(20,0,496,10);
-		top.setLayout(null);
-		top.setIcon(constructb);
-		*/
-		JLabel top2 = new JLabel();
-		top2.setBackground(Color.gray);
-		top2.setBorder(border);
-		top2.setBounds(20,30,496,10);
-		top2.setLayout(null);
-		top2.setIcon(topPanel);
-		
-		add(leftS);
-		add(rightS);
-		add(bottom);
-		//add(top);
-		add(top2);
-		
+		Color gray = Color.gray;
+		add(createJLabel(0, 0, 20, this.height, gray, border, null, construct));
+		add(createJLabel(500, 0, 20, this.height, gray, border, null, construct2));
+		add(createJLabel(20, 1000, this.width, 10, gray, border, null, topPanel));
+		add(createJLabel(20, 30, this.width, 10, gray, border, null, topPanel));	
+	}
+
+	private JLabel createJLabel(int x, int y, int width, int height, Color background, Border border, LayoutManager layout, ImageIcon icon) {
+		JLabel label = new JLabel();
+		label.setBackground(background);
+		label.setBorder(border);
+		label.setBounds(x,y,width,height);
+		label.setLayout(layout);
+		label.setIcon(icon);
+
+		return label;
 	}
 	
 	public void addNeigh(int i,int j) {
@@ -492,8 +450,8 @@ public class gameBoard extends JFrame {
 		while (remaining != 0) {	// This while loop determines the random cube ID's and adds them to the list
 			bomb = rand.nextInt(288)+1;
 			if (!nums.contains(bomb)) {
-			nums.add(bomb);
-			remaining--;
+				nums.add(bomb);
+				remaining--;
 			}
 			
 			
