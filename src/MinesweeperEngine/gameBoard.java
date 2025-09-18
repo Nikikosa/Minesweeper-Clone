@@ -161,7 +161,6 @@ public class gameBoard extends JFrame {
 		setTypes();
 	}
 	
-	@SuppressWarnings("serial")
 	public void exploded() {
 		
 		uncoverAll();
@@ -174,42 +173,26 @@ public class gameBoard extends JFrame {
 			}
 		});
 		
+		Color color1 = new Color(0,0,0,100);
+		Font buttonFont = new Font("Times New Roman", Font.BOLD, 25);
+		Border border = BorderFactory.createLineBorder(Color.darkGray);
+
 		Container glassPane = (Container) this.getGlassPane();
 		glassPane.setVisible(true);
-		
-		JButton playAgain = new JButton();
-		playAgain.setFocusable(false);
-		playAgain.setText("Play Again?");
-		playAgain.setForeground(Color.WHITE);
-		playAgain.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		playAgain.setBackground(new Color(0,0,0,100));
-		playAgain.setOpaque(false);
-		playAgain.setBounds(140, 680, 240, 120);
+		JButton playAgain = this.createJButton("Play Again?",color1,Color.WHITE,buttonFont,false,false,140,680,240,120);
 		playAgain.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == playAgain) {
 					clearBoard();
 				}
-				
 			}
-			
 		});
 		
-		JLabel label = new JLabel("You Lost!", SwingConstants.CENTER);
-		label.setBounds(140, 40,240, 40 );
-		label.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		Border border = BorderFactory.createLineBorder(Color.darkGray);
-		label.setBackground(new Color(0,0,0,100));
-		label.setForeground(Color.RED);
-		label.setBorder(border);
-		label.setLayout(null);
+		JLabel label = createJLabel("You Lost!", color1, Color.RED, buttonFont, false,false,border,null,140,40,240,40);
 		
 		glassPane.add(label);
 		glassPane.add(playAgain);
-		
-		
 	}
 	public static void checkWin() {
 		
@@ -245,7 +228,9 @@ public class gameBoard extends JFrame {
 	}
 	
 	public void win() {
-		
+		Color color1 = new Color(0,0,0,100);
+		Font buttonFont = new Font("Times New Roman", Font.BOLD, 25);
+		Border border = BorderFactory.createLineBorder(Color.darkGray);
 		this.setGlassPane(new JComponent() {
 			
 			protected void paintComponent(Graphics g) {
@@ -256,37 +241,17 @@ public class gameBoard extends JFrame {
 		
 		Container glassPane = (Container) this.getGlassPane();
 		glassPane.setVisible(true);
-		
-		JButton playAgain = new JButton();
-		playAgain.setFocusable(false);
-		playAgain.setText("Play Again?");
-		playAgain.setForeground(Color.WHITE);
-		playAgain.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		//playAgain.setIcon(playAgainPic);
-		playAgain.setBackground(new Color(0,0,0,100));
-		playAgain.setOpaque(false);
-		playAgain.setBounds(140, 680, 240, 120);
+		JButton playAgain = this.createJButton("Play Again?",color1,Color.WHITE,buttonFont,false,false,140,680,240,120);
 		playAgain.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == playAgain) {
 					clearBoard();
 				}
-				
 			}
-			
 		});
-		
-		JLabel label = new JLabel("You Win!", SwingConstants.CENTER);
-		label.setBounds(140, 40,240, 40 );
-		label.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		Border border = BorderFactory.createLineBorder(Color.darkGray);
-		label.setBackground(new Color(0,0,0,100));
-		label.setForeground(Color.GREEN);
-		label.setBorder(border);
-		label.setLayout(null);
-		
+
+		JLabel label = createJLabel("You Win!", color1, Color.GREEN, buttonFont, false,false,border,null,140,40,240,40);
 		glassPane.add(label);
 		glassPane.add(playAgain);
 	}
