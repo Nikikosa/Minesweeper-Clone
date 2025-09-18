@@ -22,11 +22,11 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 public class gameBoard extends JFrame {
-	protected int width, height,  x=20, y=40;
-	protected static int difficulty =1;      
-	protected static Cube[][] cells = new Cube[24][12];
-	protected Cube alpha;
-	protected ProgressBombs bar;
+	private int width, height,  x=20, y=40;
+	private static int difficulty =1;      
+	private static Cube[][] cells = new Cube[24][12];
+	private Cube alpha;
+	private ProgressBombs bar;
 	protected ImageIcon icon = new ImageIcon("MineImages/Bomb");
 	protected ImageIcon construct = new ImageIcon("MineImages/Constructed.png");
 	protected ImageIcon construct2 = new ImageIcon("MineImages/Constructed2.png");
@@ -37,13 +37,13 @@ public class gameBoard extends JFrame {
 	protected static ImageIcon bombImage = new ImageIcon("MineImages/Bomb.png");
 	protected static ImageIcon bombImage2 = new ImageIcon("MineImages/BombIcon.png");
 	protected JButton topFlagButton;
+	private CubeManager cubeManager;
 	
 	
 	
 	public gameBoard() {
 		this.width = 536;
 		this.height = 1049;
-		//Border border = BorderFactory.createLineBorder(Color.white);
 		setTitle("Nikikosas Minesweeper");	
 		setIconImage(bombImage2.getImage());
 		setSize(this.width, this.height);
@@ -51,12 +51,19 @@ public class gameBoard extends JFrame {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(false);
+		this.cubeManager = new CubeManager(288);
 		addSidePanels();
 		optionScreen();		
 		setVisible(true);
 		
 	}
+
+
 	public void optionScreen() {
+		Color color1 = new Color(0,0,0,100);
+		Font buttonFont = new Font("Times New Roman", Font.BOLD, 25);
+		Border border = BorderFactory.createLineBorder(Color.darkGray);
+
 		this.setGlassPane(new JComponent() {
 			protected void paintComponent(Graphics g) {
 				g.setColor(new Color(0,0,0, 220)); 		// 150 
@@ -66,86 +73,22 @@ public class gameBoard extends JFrame {
 		
 		Container glassPane = (Container) this.getGlassPane();
 		glassPane.setVisible(true);
+		JLabel label = this.createJLabel("Welcome To Nikikosas Minesweeper",color1, Color.WHITE,buttonFont,false,false,border,null,60,40,400,40);
 		
-		JLabel label = new JLabel("Welcome To Nikikosas Minesweeper", SwingConstants.CENTER);
-		label.setBounds(60, 40,400, 40 );
-		label.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		Border border = BorderFactory.createLineBorder(Color.darkGray);
-		label.setBackground(new Color(0,0,0,100));
-		label.setForeground(Color.white);
-		label.setBorder(border);
-		label.setLayout(null);
-		
-		JRadioButton easy = new JRadioButton("Easy");
-		JRadioButton medium = new JRadioButton("Medium");
-		JRadioButton hard = new JRadioButton("Hard");
 		ButtonGroup group = new ButtonGroup();   // creates a new group object
+		JRadioButton easy = createJRadioButton("Easy", color1, Color.GREEN, buttonFont, false,false, 60, 520, 120, 40);
+		JRadioButton medium = createJRadioButton("Medium", color1, Color.YELLOW, buttonFont, false,false, 220, 520, 120, 40);
+		JRadioButton hard = createJRadioButton("Hard", color1, Color.RED, buttonFont, false,false, 380, 520, 120, 40);
 		group.add(easy);   // these 3 buttons are added to the group
 		group.add(medium);
 		group.add(hard);
-		
-		easy.setBounds(60, 520, 120, 40);
-		easy.setBackground(new Color(0,0,0,100));
-		easy.setOpaque(false);
-		easy.setForeground(Color.GREEN);
-		easy.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		
-		medium.setBounds(220, 520, 120, 40);
-		medium.setBackground(new Color(0,0,0,100));
-		medium.setForeground(Color.YELLOW);
-		medium.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		medium.setOpaque(false);
-		
-		hard.setBounds(380, 520, 120, 40);
-		hard.setBackground(new Color(0,0,0,100));
-		hard.setOpaque(false);
-		hard.setForeground(Color.RED);
-		hard.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		
-		easy.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource()== easy) {
-					difficulty = 1;
-				}
-				
-			}
-			
-		});
-		medium.addActionListener(new ActionListener() {
+		createDifficultyActionListener(easy,1);
+		createDifficultyActionListener(medium,2);
+		createDifficultyActionListener(hard,3);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource()== medium) {
-					difficulty = 2;
-				}
-				
-			}
-			
-		});
-		hard.addActionListener(new ActionListener() {
+		JButton play = createJButton("Play", color1,Color.WHITE ,buttonFont,false,false,140,720,240,120);
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource()== hard) {
-					difficulty = 3;
-				}
-				
-			}
-			
-		});
-		
-		
-		
-		JButton play = new JButton();
-		play.setFocusable(false);
-		play.setText("Play");
-		play.setForeground(Color.WHITE);
-		play.setFont(new Font("Times New Roman", Font.BOLD, 25));
-		play.setBackground(new Color(0,0,0,100));
-		play.setOpaque(false);
-		play.setBounds(140, 720, 240, 120);
 		play.addActionListener(new ActionListener() {
 			
 			@Override
@@ -165,6 +108,50 @@ public class gameBoard extends JFrame {
 		glassPane.add(hard);
 		glassPane.add(play);
 		glassPane.add(label);
+	}
+
+	private void createDifficultyActionListener(JRadioButton button, int level) {
+		button.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource()== button) {
+				difficulty = level;
+			}
+		}
+		});
+	}
+
+	private JLabel createJLabel(String name, Color colorBackGround, Color colorForeGround, Font font, boolean Opaque,boolean focusable, Border border, LayoutManager layout, int x, int y, int width, int height) {
+		JLabel label = new JLabel(name, SwingConstants.CENTER);
+		label.setBounds(x, y,width, height);
+		label.setFont(font);
+		label.setBackground(colorBackGround);
+		label.setForeground(colorForeGround);
+		label.setBorder(border);
+		label.setLayout(layout);
+		return label;
+	}
+
+	private JButton createJButton(String name, Color colorBackGround, Color colorForeGround, Font buttonFont, boolean Opaque,boolean focusable, int x, int y, int width, int height) {
+		JButton button = new JButton(name);
+		button.setFocusable(focusable);
+		button.setBounds(x, y, width, height);
+		button.setBackground(colorBackGround);
+		button.setOpaque(Opaque);
+		button.setForeground(colorForeGround);
+		button.setFont(buttonFont);
+		return button;
+	}
+
+	private JRadioButton createJRadioButton(String name, Color colorBackGround, Color colorForeGround, Font buttonFont, boolean Opaque,boolean focusable, int x, int y, int width, int height) {
+		JRadioButton button = new JRadioButton(name);
+		button.setFocusable(focusable);
+		button.setBounds(x, y, width, height);
+		button.setBackground(colorBackGround);
+		button.setOpaque(Opaque);
+		button.setForeground(colorForeGround);
+		button.setFont(buttonFont);
+		return button;
 	}
 	
 	public void playGame() {

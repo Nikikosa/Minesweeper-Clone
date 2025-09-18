@@ -5,9 +5,7 @@ public class CubeManager {
     private int width;
     private int height;
 
-    public CubeManager(int numCubes, int width, int height) {
+    public CubeManager(int numCubes) {
         this.numCubes = numCubes;
-        this.width = width;
-        this.height = height;
     }
 }
