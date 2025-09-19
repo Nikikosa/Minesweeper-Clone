@@ -94,8 +94,6 @@ public class gameBoard extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == play) {
-					//makeBoard();
-					//playGame();
 					cubeManager.populateCells(difficulty);
 					cubeManager.showCells();
 					glassPane.setVisible(false);
@@ -158,8 +156,6 @@ public class gameBoard extends JFrame {
 	
 	public void exploded() {
 		
-		//uncoverAll();
-		
 		this.setGlassPane(new JComponent() {
 			
 			protected void paintComponent(Graphics g) {
@@ -191,43 +187,12 @@ public class gameBoard extends JFrame {
 	}
 
 	public void reset() {
-
-		//this.cubeManager = new CubeManager(this, 288);
 		this.cubeManager.purgeCells();
 		this.optionScreen();
 	}
 
-	public static void checkWin() {
-		
-		int bombs, counter = 0;
-
-		switch(difficulty) {
-		case 1:
-			bombs = 25;
-			break;
-		case 2: 
-			bombs = 50;
-			break;
-		case 3: 
-			bombs = 90;
-			break;
-		default: 
-			bombs = 0;
-			break;
-		}
-		
-		
-		for (int i =0; i<24; i++) {
-			for (int j=0; j<12; j++) {
-				if (cells[i][j].isFlagged && cells[i][j].isBomb) {
-					counter++;
-				}
-			}
-		}
-		
-		if (counter == bombs) {
-			game.win();
-		}
+	public void checkWin() {
+		this.cubeManager.checkWin(difficulty);
 	}
 	
 	public void win() {
@@ -259,21 +224,8 @@ public class gameBoard extends JFrame {
 		glassPane.add(playAgain);
 	}
 	
-	// public void uncoverAll() {
-	// 	for (int i =0; i<24; i++) {
-	// 		for (int j=0; j<12; j++) {
-	// 			cells[i][j].uncover();
-	// 		}
-	// 	}
-	// }
-	
 	public void clearBoard() {
-		
-		//cells[0][0].clearID();
-		//this.dispose();
-		//game.reset();
 		this.reset();
-		
 	}
 	
 	public void addSidePanels() {

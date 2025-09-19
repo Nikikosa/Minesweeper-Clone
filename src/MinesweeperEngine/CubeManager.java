@@ -124,6 +124,33 @@ public class CubeManager {
         }
     }
 
+    public void checkWin(int difficulty) {
+        int numOfBombs = 0;
+        switch (difficulty) {
+            case 1: 
+                numOfBombs = 25;
+                break;
+            case 2: 
+                numOfBombs = 50;
+                break;
+            case 3: 
+                numOfBombs = 90;
+                break;
+            default:
+                return;
+        }
+        int counter = 0;
+        for (Cube cell : this.cellList) {
+            if (cell.isFlagged && cell.isBomb) {
+                counter++;
+            }
+        }
+
+        if (counter == numOfBombs) {
+            this.board.win();
+        }
+    }
+
 
     public void purgeCells() {
         for (Cube cell : this.cellList) {

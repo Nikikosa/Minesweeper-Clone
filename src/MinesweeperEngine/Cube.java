@@ -71,13 +71,12 @@ public class Cube extends JPanel implements ActionListener{
 		clearNeighbors();
 		addButton();
 		add(button);
-		
-		
 	}
 	public void clearNeighbors() {
 		for (int i = 0; i< neighbors.length; i++) {
 			neighbors[i] = null;
 		}
+		neighCounter=0;
 	}
 	public void clearID() {
 		cubeID=1;
@@ -117,8 +116,7 @@ public class Cube extends JPanel implements ActionListener{
 						
 							setFlag();
 							if (flags == 0 || uncoveredCells==288) {
-								
-								gameBoard.checkWin();
+								//gameBoard.checkWin();
 							}
 							
 					}
@@ -146,7 +144,7 @@ public class Cube extends JPanel implements ActionListener{
 		//System.out.println(flags + " "+ numOfBombs);
 		if (flags == numOfBombs*2) {
 			flags*=0.5;
-			System.out.println("Hey");
+			//System.out.println("Hey");
 		}
 		
 		if (!(flags < 1)) {
@@ -160,7 +158,7 @@ public class Cube extends JPanel implements ActionListener{
 		bar.removeBomb();
 		//System.out.println(flags);
 		if (flags == 0) {
-			gameBoard.checkWin();
+			//gameBoard.checkWin();
 		}
 		
 		}
@@ -319,7 +317,7 @@ public class Cube extends JPanel implements ActionListener{
 			
 			
 			if (uncoveredCells == 288) {
-				gameBoard.checkWin();
+				//gameBoard.checkWin();
 			}
 		}
 	}
