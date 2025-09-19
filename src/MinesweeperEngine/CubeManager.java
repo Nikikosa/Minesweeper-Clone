@@ -1,15 +1,21 @@
 package MinesweeperEngine;
 
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class CubeManager {
+    private gameBoard board;
     private int numCubes;
     private int width = 40;
     private int height = 40;
     private Cube[][] cells;
     private LinkedList<Cube> cellList;
+    private ProgressBombs bar;
+    private int numOfBombsRemaining;
 
-    public CubeManager(int numCubes) {
+    public CubeManager(gameBoard board,int numCubes) {
+        this.board = board;
         this.numCubes = numCubes;
         this.cells = new Cube[24][12];
         this.cellList = new LinkedList<>();
@@ -22,17 +28,124 @@ public class CubeManager {
         int y = 40;
         for (int i =0; i<24; i++) {
 			for (int j=0; j<12; j++) {
-				cell = new Cube(x,y);
+				cell = new Cube(this,x,y);
 				this.cells[i][j]=cell;
                 cellList.add(cell);
-				//add(alpha);
 				x+=40;
 			}
 			x=20;
 			y+=40;	
 		}
-		
 		x=0;
 		y=0;
+    }
+
+    public void populateCells(int difficulty) {
+        int numOfBombs = 0;
+        switch (difficulty) {
+            case 1: 
+                numOfBombs = 25;
+                break;
+            case 2: 
+                numOfBombs = 50;
+                break;
+            case 3: 
+                numOfBombs = 90;
+                break;
+            default:
+                return;
+        }
+        this.generateBombs(numOfBombs);
+        this.numOfBombsRemaining = numOfBombs;
+        this.bar = new ProgressBombs(this.numOfBombsRemaining);
+        this.populateTypes();;
+
+    }
+
+    private void populateTypes() {
+        for (int i =0; i<24; i++) {
+			for (int j=0; j<12; j++) {
+				
+				
+			
+					if (!(i-1==-1 || j-1==-1)) {
+					this.cells[i][j].addNeighbor(this.cells[i-1][j-1]);
+					}
+				
+					if (!(i-1==-1)) {
+					this.cells[i][j].addNeighbor(this.cells[i-1][j]);
+					}
+				
+					if(!(i-1==-1 || j+1==12)) {
+					this.cells[i][j].addNeighbor(this.cells[i-1][j+1]);
+					}
+					
+					if (!(j-1==-1)) {
+					this.cells[i][j].addNeighbor(this.cells[i][j-1]);
+					}
+					
+					if (!(j+1==12)) {
+					this.cells[i][j].addNeighbor(this.cells[i][j+1]);
+					}
+					
+					if (!(i+1==24 || j-1==-1)) {
+					this.cells[i][j].addNeighbor(this.cells[i+1][j-1]);
+					}
+				 
+					if (!(i+1==24)) {
+					this.cells[i][j].addNeighbor(this.cells[i+1][j]);
+					}
+		 
+					if (!(i+1==24 || j+1==12)) {
+					this.cells[i][j].addNeighbor(this.cells[i+1][j+1]);
+					}
+				
+					this.cells[i][j].setType();
+			}	
+		}
+    }
+
+    private void generateBombs(int numOfBombs) {
+        HashSet<Integer> bombCellIds = new HashSet<>();
+        Random rand = new Random();
+        
+        while (bombCellIds.size() <= numOfBombs) {
+            bombCellIds.add(rand.nextInt(this.numCubes)+1);
+        }
+
+        this.populateBombs(bombCellIds);
+    }
+
+    private void populateBombs(HashSet<Integer> bombIds) {
+        for (Cube cell : this.cellList) {
+            if (bombIds.contains(cell.getID())) {
+                cell.changtoBomb();
+            }
+        }
+    }
+
+
+    public void purgeCells() {
+        for (Cube cell : this.cellList) {
+            cell.clearCube();
+            cell.setVisible(false);
+        }
+    }
+
+    public void showCells() {
+        for (Cube cell : this.cellList) {
+            this.board.add(cell).setVisible(true);;
+        }
+    }
+
+    private void uncoverAllCells() {
+        for (Cube cell : this.cellList) {
+            cell.uncover();
+        }
+    }
+
+    public void explosionTriggered() {
+        uncoverAllCells();
+        this.board.exploded();
     }
 }

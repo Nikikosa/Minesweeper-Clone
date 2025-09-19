@@ -22,7 +22,8 @@ public class game {
 	 * because we will not have to do manually reset the board.
 	 */
 	public static void reset() {
-		mineSweeper = new gameBoard();
+		//mineSweeper = new gameBoard();
+		//mineSweeper.reset();
 	}
 	
 	/**

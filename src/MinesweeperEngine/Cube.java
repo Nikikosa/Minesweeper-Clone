@@ -14,6 +14,7 @@ public class Cube extends JPanel implements ActionListener{
 	public static int numOfBombs;
 	public static int flags;
 	private  Cube[] neighbors = new Cube[8];
+	private CubeManager manager;
 	protected int iD;
 	protected JButton button;
 	protected JLabel label;
@@ -40,7 +41,8 @@ public class Cube extends JPanel implements ActionListener{
 	protected static gameBoard board;
 	protected static int uncoveredCells=0;
 
-	public Cube(int x, int y) {		
+	public Cube(CubeManager manager ,int x, int y) {	
+		this.manager=manager;	
 		iD=cubeID;
 		cubeID++;
 		px=x;
@@ -304,7 +306,7 @@ public class Cube extends JPanel implements ActionListener{
 				button.setIcon(pressedBombImage);
 				uncovered = true;
 				
-				board.exploded();
+				manager.explosionTriggered();
 				
 			} else {
 				uncover();

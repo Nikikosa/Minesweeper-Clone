@@ -16,10 +16,8 @@ public class ProgressBombs extends JProgressBar{
 		setFont(new Font("Times New Roman", Font.BOLD, 25));
 		setBackground(Color.black);
 		setForeground(Color.black);
-		
 		setValue(0);
 		setString(String.valueOf(bombs));
-		
 	}
 	
 	void removeBomb() {
