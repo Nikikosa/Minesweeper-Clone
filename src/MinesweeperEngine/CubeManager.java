@@ -13,6 +13,7 @@ public class CubeManager {
     private LinkedList<Cube> cellList;
     private ProgressBombs bar;
     private int numOfBombsRemaining;
+    private int difficulty;
 
     public CubeManager(gameBoard board,int numCubes) {
         this.board = board;
@@ -59,7 +60,20 @@ public class CubeManager {
         this.numOfBombsRemaining = numOfBombs;
         this.bar = new ProgressBombs(this.numOfBombsRemaining);
         this.populateTypes();;
+        this.difficulty = difficulty;
+    }
 
+    private int getNumOfBombs() {
+        switch (difficulty) {
+            case 1: 
+                return 25;
+            case 2: 
+                return 50;
+            case 3: 
+                return 90;
+            default:
+                return 0;
+        }
     }
 
     private void populateTypes() {
@@ -125,20 +139,7 @@ public class CubeManager {
     }
 
     public void checkWin(int difficulty) {
-        int numOfBombs = 0;
-        switch (difficulty) {
-            case 1: 
-                numOfBombs = 25;
-                break;
-            case 2: 
-                numOfBombs = 50;
-                break;
-            case 3: 
-                numOfBombs = 90;
-                break;
-            default:
-                return;
-        }
+        int numOfBombs = getNumOfBombs();
         int counter = 0;
         for (Cube cell : this.cellList) {
             if (cell.isFlagged && cell.isBomb) {
@@ -174,5 +175,9 @@ public class CubeManager {
     public void explosionTriggered() {
         uncoverAllCells();
         this.board.exploded();
+    }
+
+    public void setFlag(int id) {
+        this.cellList.get(id-1).flagButton();
     }
 }
