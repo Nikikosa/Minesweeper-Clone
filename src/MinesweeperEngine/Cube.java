@@ -110,9 +110,10 @@ public class Cube extends JPanel implements ActionListener{
 						
 					} else {
 					if (isFlagged == true) {
-						removeFlag();
+						//removeFlag();
+						manager.removeFlag(iD);
 					} else {
-							setFlag();
+							manager.setFlag(iD);
 							if (flags == 0 || uncoveredCells==288) {
 								//gameBoard.checkWin();
 							}
@@ -138,29 +139,10 @@ public class Cube extends JPanel implements ActionListener{
 			
 		
 	}
-	public void setFlag() {
-		// System.out.println(flags + " " + numOfBombs);
-		// if (flags == numOfBombs*2) {
-		// 	flags*=0.5;
-		// }
-		
-		// if (!(flags < 1)) {
-		// 	uncoveredCells++;
-		// if (isFlagged == false) {
-		// 	flags--;
-		// }
-		// isFlagged = true;
-		// this.button.setIcon(flag);
-		// bar.removeBomb();
-		// if (flags == 0) {
-		// }
-		
-		// }
-		this.manager.setFlag(this.iD);
-	}
 
 	public void flagButton() {
 		this.button.setIcon(flag);
+		this.isFlagged = true;
 	}
 	
 	public void resetCounter() {
@@ -175,11 +157,12 @@ public class Cube extends JPanel implements ActionListener{
 			
 	}
 	public void removeFlag() {
-		uncoveredCells--;
+		// uncoveredCells--;
 		this.button.setIcon(cubeImage);
-		bar.addBomb();
-		isFlagged=false;
-		flags++;
+		this.isFlagged = false;
+		// bar.addBomb();
+		// isFlagged=false;
+		// flags++;
 	}
 	public void changtoBomb() {
 		

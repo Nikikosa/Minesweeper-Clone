@@ -7,8 +7,6 @@ import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -57,7 +55,6 @@ public class gameBoard extends JFrame {
 		setVisible(true);
 		
 	}
-
 
 	public void optionScreen() {
 		Color color1 = new Color(0,0,0,100);

@@ -180,4 +180,8 @@ public class CubeManager {
     public void setFlag(int id) {
         this.cellList.get(id-1).flagButton();
     }
+
+        public void removeFlag(int id) {
+        this.cellList.get(id-1).removeFlag();
+    }
 }
