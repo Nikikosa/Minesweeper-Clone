@@ -110,7 +110,6 @@ public class Cube extends JPanel implements ActionListener{
 						
 					} else {
 					if (isFlagged == true) {
-						//removeFlag();
 						manager.removeFlag(iD);
 					} else {
 							manager.setFlag(iD);
@@ -148,14 +147,12 @@ public class Cube extends JPanel implements ActionListener{
 	public void resetCounter() {
 		uncoveredCells=0;
 	}
+
 	public void addNeighbor(Cube alpha) {
-			
-			
-			neighbors[neighCounter]=alpha;
-			neighCounter++;
-			
-			
+		neighbors[neighCounter]=alpha;
+		neighCounter++;		
 	}
+
 	public void removeFlag() {
 		// uncoveredCells--;
 		this.button.setIcon(cubeImage);
@@ -165,22 +162,22 @@ public class Cube extends JPanel implements ActionListener{
 		// flags++;
 	}
 	public void changtoBomb() {
-		
-		
-		
 		this.isBomb=true;
-		//button.setIcon(bombImage);
 	}
+
 	public void setFlags() {
 		flags=numOfBombs;
 	}
+
 	public void setNumOfBombs(int bombs) {
 		numOfBombs=bombs;
 		setFlags();
 	}
+
 	public boolean bombStatus() {
 		return this.isBomb;
 	}
+	
 	public void setType() {
 		counter=0;
 		for (int i =0; i < 8 ; i++) {
@@ -251,21 +248,14 @@ public class Cube extends JPanel implements ActionListener{
 		//System.out.println(uncoveredCells);
 	}
 	public void removeBlanks(Cube alpha) { // Causes stack overflow (fixed)
-		
-		
 		alpha.button.setIcon(blank);
-		
 		for (int i =0; i < 8 ; i++) {
-			
 			if (neighbors[i]!=null && !neighbors[i].bombStatus())  {
 				if (!alpha.neighbors[i].uncovered) {
-				
-				alpha.neighbors[i].uncover();
+					alpha.neighbors[i].uncover();
 				}
 			}
 		}
-		
-		
 	}
 
 	@Override

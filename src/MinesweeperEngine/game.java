@@ -16,16 +16,7 @@ public class game {
 	public static void main(String[] args) {
 		mineSweeper = new gameBoard();
 	}
-	
-	/**
-	 * The reset method gets called from the gameBoard object we created in the main method to create a new object. This is done
-	 * because we will not have to do manually reset the board.
-	 */
-	public static void reset() {
-		//mineSweeper = new gameBoard();
-		//mineSweeper.reset();
-	}
-	
+
 	/**
 	 * The win method was added to fix a static issue within the gameBoard class. Basically if a win condition is met,
 	 * this method will be called from the gameboard class, and the game will be won.
