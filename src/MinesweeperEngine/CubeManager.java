@@ -1,3 +1,6 @@
+/**
+ * Author: Nikikosa
+ */
 package MinesweeperEngine;
 
 import java.util.HashSet;
