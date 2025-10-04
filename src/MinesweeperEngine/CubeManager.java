@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.JProgressBar;
+
 public class CubeManager {
     private gameBoard board;
     private int numCubes;
@@ -62,8 +64,12 @@ public class CubeManager {
         this.generateBombs(numOfBombs);
         this.numOfBombsRemaining = numOfBombs;
         this.bar = new ProgressBombs(this.numOfBombsRemaining);
-        this.populateTypes();;
+        this.populateTypes();
         this.difficulty = difficulty;
+    }
+
+    public ProgressBombs getProgressBar() {
+        return this.bar;
     }
 
     private int getNumOfBombs() {
@@ -182,9 +188,11 @@ public class CubeManager {
 
     public void setFlag(int id) {
         this.cellList.get(id-1).flagButton();
+        this.bar.removeBomb();
     }
 
     public void removeFlag(int id) {
         this.cellList.get(id-1).removeFlag();
+        this.bar.addBomb();
     }
 }

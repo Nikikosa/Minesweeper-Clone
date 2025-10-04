@@ -93,6 +93,9 @@ public class gameBoard extends JFrame {
 				if (e.getSource() == play) {
 					cubeManager.populateCells(difficulty);
 					cubeManager.showCells();
+					bar = cubeManager.getProgressBar();
+					add(bar);
+					bar.setVisible(true);
 					glassPane.setVisible(false);
 				}
 				
