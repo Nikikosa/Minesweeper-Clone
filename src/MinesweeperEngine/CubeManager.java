@@ -187,12 +187,16 @@ public class CubeManager {
     }
 
     public void setFlag(int id) {
-        this.cellList.get(id-1).flagButton();
-        this.bar.removeBomb();
+        if (this.numOfBombsRemaining > 0) {
+            this.cellList.get(id-1).flagButton();
+            this.bar.removeBomb();
+            this.numOfBombsRemaining--;
+        }
     }
 
     public void removeFlag(int id) {
         this.cellList.get(id-1).removeFlag();
         this.bar.addBomb();
+        this.numOfBombsRemaining++;
     }
 }
