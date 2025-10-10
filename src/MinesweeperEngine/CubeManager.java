@@ -7,15 +7,12 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javax.swing.JProgressBar;
-
 public class CubeManager {
     private gameBoard board;
     private int numCubes;
-    private int width = 40;
-    private int height = 40;
     private Cube[][] cells;
     private LinkedList<Cube> cellList;
+    private LinkedList<Cube> bombList;
     private ProgressBombs bar;
     private int numOfBombsRemaining;
     private int difficulty;
@@ -25,6 +22,7 @@ public class CubeManager {
         this.numCubes = numCubes;
         this.cells = new Cube[24][12];
         this.cellList = new LinkedList<>();
+        this.bombList = new LinkedList<>();
         initCubeMatrix();
     }
 
@@ -66,6 +64,11 @@ public class CubeManager {
         this.bar = new ProgressBombs(this.numOfBombsRemaining);
         this.populateTypes();
         this.difficulty = difficulty;
+    }
+
+    public void resetProgressBar() {
+        this.numOfBombsRemaining = this.getNumOfBombs();
+        this.bar = new ProgressBombs(this.numOfBombsRemaining);
     }
 
     public ProgressBombs getProgressBar() {
@@ -132,7 +135,7 @@ public class CubeManager {
         HashSet<Integer> bombCellIds = new HashSet<>();
         Random rand = new Random();
         
-        while (bombCellIds.size() <= numOfBombs) {
+        while (bombCellIds.size() < numOfBombs) {
             bombCellIds.add(rand.nextInt(this.numCubes)+1);
         }
 
@@ -143,6 +146,7 @@ public class CubeManager {
         for (Cube cell : this.cellList) {
             if (bombIds.contains(cell.getID())) {
                 cell.changtoBomb();
+                this.bombList.add(cell);
             }
         }
     }
@@ -150,8 +154,8 @@ public class CubeManager {
     public void checkWin(int difficulty) {
         int numOfBombs = getNumOfBombs();
         int counter = 0;
-        for (Cube cell : this.cellList) {
-            if (cell.isFlagged && cell.isBomb) {
+        for (Cube cell : this.bombList) {
+            if (cell.isFlagged) {
                 counter++;
             }
         }
@@ -191,6 +195,9 @@ public class CubeManager {
             this.cellList.get(id-1).flagButton();
             this.bar.removeBomb();
             this.numOfBombsRemaining--;
+        }
+        if (this.numOfBombsRemaining == 0) {
+            this.checkWin(this.difficulty);
         }
     }
 

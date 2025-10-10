@@ -20,10 +20,9 @@ import javax.swing.SwingConstants;
 import javax.swing.border.Border;
 
 public class gameBoard extends JFrame {
-	private int width, height,  x=20, y=40;
+	private int width, height;
 	private static int difficulty =1;      
 	private static Cube[][] cells = new Cube[24][12];
-	private Cube alpha;
 	private ProgressBombs bar;
 	protected ImageIcon icon = new ImageIcon("MineImages/Bomb");
 	protected ImageIcon construct = new ImageIcon("MineImages/Constructed.png");
@@ -93,6 +92,7 @@ public class gameBoard extends JFrame {
 				if (e.getSource() == play) {
 					cubeManager.populateCells(difficulty);
 					cubeManager.showCells();
+					cubeManager.resetProgressBar();
 					bar = cubeManager.getProgressBar();
 					add(bar);
 					bar.setVisible(true);

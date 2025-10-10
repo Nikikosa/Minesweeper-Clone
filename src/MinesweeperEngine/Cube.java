@@ -37,8 +37,8 @@ public class Cube extends JPanel implements ActionListener{
 	protected boolean isFlagged = false;
 	protected boolean clicked = false;
 	protected boolean uncovered = false;
-	protected static ProgressBombs bar;
-	protected static gameBoard board;
+	protected ProgressBombs bar;
+	protected gameBoard board;
 	protected static int uncoveredCells=0;
 
 	public Cube(CubeManager manager ,int x, int y) {	
@@ -109,15 +109,11 @@ public class Cube extends JPanel implements ActionListener{
 					if (uncovered == true) {
 						
 					} else {
-					if (isFlagged == true) {
-						manager.removeFlag(iD);
-					} else {
+						if (isFlagged == true) {
+							manager.removeFlag(iD);
+						} else {
 							manager.setFlag(iD);
-							if (flags == 0 || uncoveredCells==288) {
-								//gameBoard.checkWin();
-							}
-							
-					}
+						}
 					}
 				}
 				}
@@ -154,12 +150,8 @@ public class Cube extends JPanel implements ActionListener{
 	}
 
 	public void removeFlag() {
-		// uncoveredCells--;
 		this.button.setIcon(cubeImage);
 		this.isFlagged = false;
-		// bar.addBomb();
-		// isFlagged=false;
-		// flags++;
 	}
 	public void changtoBomb() {
 		this.isBomb=true;
@@ -193,7 +185,6 @@ public class Cube extends JPanel implements ActionListener{
 		
 	}
 	public void uncover() {
-		
 		if (this.isBomb==true) {
 			if (pressedBomb==1) {
 				this.button.setIcon(pressedBombImage);
@@ -245,9 +236,9 @@ public class Cube extends JPanel implements ActionListener{
 		}
 		clicked=true;
 		uncoveredCells++;
-		//System.out.println(uncoveredCells);
 	}
-	public void removeBlanks(Cube alpha) { // Causes stack overflow (fixed)
+
+	public void removeBlanks(Cube alpha) {
 		alpha.button.setIcon(blank);
 		for (int i =0; i < 8 ; i++) {
 			if (neighbors[i]!=null && !neighbors[i].bombStatus())  {
@@ -263,12 +254,9 @@ public class Cube extends JPanel implements ActionListener{
 		if (e.getSource()==button) {
 			if (!clicked) {
 			button.setVisible(false);
-			
 			if (isFlagged == true) {
 				flags++;
-			}
-			//System.out.println(flags); // Bug with flags, When unchecked, number of flags increases for no reason  (Fixed)
-			
+			}			
 			if (isBomb) {
 				this.pressedBomb=1;
 				button.setIcon(pressedBombImage);
@@ -281,14 +269,7 @@ public class Cube extends JPanel implements ActionListener{
 			}
 			button.setVisible(true);
 			clicked=true;
-			} else {
-				
-			}
-			
-			
-			if (uncoveredCells == 288) {
-				//gameBoard.checkWin();
-			}
+			} 
 		}
 	}
 	
