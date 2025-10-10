@@ -29,6 +29,7 @@ public class ProgressBombs extends JProgressBar{
 		setString(String.valueOf(bombs));
 		}
 	}
+	
 	void addBomb() {
 		if (bombs == max) {
 			
@@ -37,9 +38,11 @@ public class ProgressBombs extends JProgressBar{
 		setString(String.valueOf(bombs));
 		}
 	}
+	
 	void pressed() {
 		setFont(new Font("Times New Roman", Font.BOLD, 45));
 	}
+	
 	void released() {
 		setFont(new Font("Times New Roman", Font.BOLD, 25));
 	}
