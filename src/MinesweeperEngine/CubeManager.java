@@ -21,6 +21,7 @@ public class CubeManager {
         this.board = board;
         this.numCubes = numCubes;
         this.cells = new Cube[24][12];
+        this.bar = new ProgressBombs(0);
         initCubeMatrix();
     }
 
@@ -61,14 +62,9 @@ public class CubeManager {
         this.bombList = new LinkedList<>();
         this.generateBombs(numOfBombs);
         this.numOfBombsRemaining = numOfBombs;
-        this.bar = new ProgressBombs(this.numOfBombsRemaining);
+        this.bar.resetBar(numOfBombs);
         this.populateTypes();
         this.difficulty = difficulty;
-    }
-
-    public void resetProgressBar() {
-        this.numOfBombsRemaining = this.getNumOfBombs();
-        this.bar = new ProgressBombs(this.numOfBombsRemaining);
     }
 
     public ProgressBombs getProgressBar() {
@@ -149,8 +145,6 @@ public class CubeManager {
                 this.bombList.add(cell);
             }
         }
-        System.out.println("Bomb List Size: " + this.bombList.size());
-        System.out.println("Cell List Size: " + this.cellList.size());
     }
 
     public void checkWin(int difficulty) {

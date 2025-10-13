@@ -29,6 +29,12 @@ public class ProgressBombs extends JProgressBar{
 		setString(String.valueOf(bombs));
 		}
 	}
+
+	void resetBar(int bombs) {
+		this.bombs = bombs;
+		this.max=bombs;
+		setString(String.valueOf(bombs));
+	}
 	
 	void addBomb() {
 		if (bombs == max) {
