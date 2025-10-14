@@ -54,7 +54,7 @@ public class CubeManager {
                 numOfBombs = 50;
                 break;
             case 3: 
-                numOfBombs = 90;
+                numOfBombs = 75;
                 break;
             default:
                 return;
