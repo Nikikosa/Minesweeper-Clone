@@ -78,7 +78,7 @@ public class CubeManager {
             case 2: 
                 return 50;
             case 3: 
-                return 90;
+                return 75;
             default:
                 return 0;
         }
