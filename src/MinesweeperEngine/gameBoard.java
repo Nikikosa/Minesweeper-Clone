@@ -21,6 +21,19 @@ import javax.swing.border.Border;
 
 public class gameBoard extends JFrame {
 	private int width, height;
+	private static final int CELL_SIZE = 40;
+	private static final int BOARD_ROWS = 24;
+	private static final int BOARD_COLUMNS = 12;
+	private static final int BOARD_X = 20;
+	private static final int BOARD_Y = 40;
+	private static final int SIDE_PANEL_WIDTH = 20;
+	private static final int PANEL_HEIGHT = 10;
+	private static final int TOP_PANEL_Y = BOARD_Y - PANEL_HEIGHT;
+	private static final int BOARD_WIDTH = BOARD_COLUMNS * CELL_SIZE;
+	private static final int BOARD_HEIGHT = BOARD_ROWS * CELL_SIZE;
+	private static final int RIGHT_PANEL_X = BOARD_X + BOARD_WIDTH;
+	private static final int BOTTOM_PANEL_Y = BOARD_Y + BOARD_HEIGHT;
+	private static final int SIDE_PANEL_HEIGHT = BOTTOM_PANEL_Y + PANEL_HEIGHT;
 	private static int difficulty =1;      
 	private static Cube[][] cells = new Cube[24][12];
 	private ProgressBombs bar;
@@ -230,10 +243,10 @@ public class gameBoard extends JFrame {
 	public void addSidePanels() {
 		Border border = BorderFactory.createLineBorder(Color.darkGray);
 		Color gray = Color.gray;
-		add(createJLabel(0, 0, 20, this.height, gray, border, null, construct));
-		add(createJLabel(500, 0, 20, this.height, gray, border, null, construct2));
-		add(createJLabel(20, 1000, this.width, 10, gray, border, null, topPanel));
-		add(createJLabel(20, 30, this.width, 10, gray, border, null, topPanel));	
+		add(createJLabel(0, 0, SIDE_PANEL_WIDTH, SIDE_PANEL_HEIGHT, gray, border, null, construct));
+		add(createJLabel(RIGHT_PANEL_X, 0, SIDE_PANEL_WIDTH, SIDE_PANEL_HEIGHT, gray, border, null, construct2));
+		add(createJLabel(BOARD_X, BOTTOM_PANEL_Y, BOARD_WIDTH, PANEL_HEIGHT, gray, border, null, bottomPanel));
+		add(createJLabel(BOARD_X, TOP_PANEL_Y, BOARD_WIDTH, PANEL_HEIGHT, gray, border, null, topPanel));	
 	}
 
 	private JLabel createJLabel(int x, int y, int width, int height, Color background, Border border, LayoutManager layout, ImageIcon icon) {
