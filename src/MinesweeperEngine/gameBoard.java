@@ -5,8 +5,11 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -15,9 +18,12 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 public class gameBoard extends JFrame {
 	private int width, height;
@@ -34,7 +40,21 @@ public class gameBoard extends JFrame {
 	private static final int RIGHT_PANEL_X = BOARD_X + BOARD_WIDTH;
 	private static final int BOTTOM_PANEL_Y = BOARD_Y + BOARD_HEIGHT;
 	private static final int SIDE_PANEL_HEIGHT = BOTTOM_PANEL_Y + PANEL_HEIGHT;
-	private static int difficulty =1;      
+	private static final Color START_BACKGROUND = new Color(24, 24, 24);
+	private static final Color OVERLAY_BACKGROUND = new Color(0, 0, 0, 220);
+	private static final Color PANEL_BACKGROUND = new Color(48, 48, 48);
+	private static final Color CONTROL_BACKGROUND = Color.gray;
+	private static final Color CONTROL_HOVER_BACKGROUND = new Color(112, 112, 112);
+	private static final Color PANEL_BORDER = Color.darkGray;
+	private static final Color CONTROL_HOVER_BORDER = Color.LIGHT_GRAY;
+	private static final Color COPY_COLOR = Color.WHITE;
+	private static final Color SUPPORT_COPY_COLOR = Color.LIGHT_GRAY;
+	private static final Color WIN_COPY_COLOR = new Color(80, 220, 90);
+	private static final Color LOSS_COPY_COLOR = new Color(230, 70, 70);
+	private static final Font TITLE_FONT = new Font("Times New Roman", Font.BOLD, 28);
+	private static final Font BODY_FONT = new Font("Times New Roman", Font.BOLD, 20);
+	private static final Font BUTTON_FONT = new Font("Times New Roman", Font.BOLD, 24);
+	private static int difficulty =1;
 	private static Cube[][] cells = new Cube[24][12];
 	private ProgressBombs bar;
 	protected ImageIcon icon = new ImageIcon("MineImages/Bomb");
@@ -69,25 +89,16 @@ public class gameBoard extends JFrame {
 	}
 
 	public void optionScreen() {
-		Color color1 = new Color(0,0,0,100);
-		Font buttonFont = new Font("Times New Roman", Font.BOLD, 25);
-		Border border = BorderFactory.createLineBorder(Color.darkGray);
+		Container glassPane = createOverlayGlassPane(START_BACKGROUND);
+		JPanel menuPanel = createOverlayPanel(60, 230, 400, 430);
 
-		this.setGlassPane(new JComponent() {
-			protected void paintComponent(Graphics g) {
-				g.setColor(new Color(0,0,0, 220)); 		// 150 
-				g.fillRect(0, 0, width, height);
-			}
-		});
-		
-		Container glassPane = (Container) this.getGlassPane();
-		glassPane.setVisible(true);
-		JLabel label = this.createJLabel("Welcome To Nikikosas Minesweeper",color1, Color.WHITE,buttonFont,false,false,border,null,60,40,400,40);
-		
+		JLabel label = this.createJLabel("Nikikosas Minesweeper", PANEL_BACKGROUND, COPY_COLOR, TITLE_FONT, true, false, null, null, 20, 24, 360, 42);
+		JLabel subLabel = this.createJLabel("Select a difficulty to start", PANEL_BACKGROUND, SUPPORT_COPY_COLOR, BODY_FONT, true, false, null, null, 20, 74, 360, 30);
+
 		ButtonGroup group = new ButtonGroup();   // creates a new group object
-		JRadioButton easy = createJRadioButton("Easy", color1, Color.GREEN, buttonFont, false,false, 60, 520, 120, 40);
-		JRadioButton medium = createJRadioButton("Medium", color1, Color.YELLOW, buttonFont, false,false, 220, 520, 120, 40);
-		JRadioButton hard = createJRadioButton("Hard", color1, Color.RED, buttonFont, false,false, 380, 520, 120, 40);
+		JRadioButton easy = createJRadioButton("Easy", PANEL_BACKGROUND, Color.GREEN, BODY_FONT, true, false, 30, 144, 104, 44);
+		JRadioButton medium = createJRadioButton("Medium", PANEL_BACKGROUND, Color.YELLOW, BODY_FONT, true, false, 140, 144, 120, 44);
+		JRadioButton hard = createJRadioButton("Hard", PANEL_BACKGROUND, Color.RED, BODY_FONT, true, false, 266, 144, 104, 44);
 		group.add(easy);   // these 3 buttons are added to the group
 		group.add(medium);
 		group.add(hard);
@@ -99,10 +110,10 @@ public class gameBoard extends JFrame {
 		createDifficultyActionListener(medium,2);
 		createDifficultyActionListener(hard,3);
 
-		JButton play = createJButton("Play", color1,Color.WHITE ,buttonFont,false,false,140,720,240,120);
+		JButton play = createJButton("Play", CONTROL_BACKGROUND, COPY_COLOR, BUTTON_FONT, true, false, 80, 266, 240, 88);
 
 		play.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (e.getSource() == play) {
@@ -115,14 +126,46 @@ public class gameBoard extends JFrame {
 				}
 				
 			}
-			
+
 		});
-		
-		glassPane.add(easy);
-		glassPane.add(medium);
-		glassPane.add(hard);
-		glassPane.add(play);
-		glassPane.add(label);
+
+		menuPanel.add(easy);
+		menuPanel.add(medium);
+		menuPanel.add(hard);
+		menuPanel.add(play);
+		menuPanel.add(label);
+		menuPanel.add(subLabel);
+		glassPane.add(menuPanel);
+	}
+
+	private Container createOverlayGlassPane() {
+		return createOverlayGlassPane(OVERLAY_BACKGROUND);
+	}
+
+	private Container createOverlayGlassPane(Color background) {
+		this.setGlassPane(new JComponent() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				g.setColor(background);
+				g.fillRect(0, 0, getWidth(), getHeight());
+			}
+		});
+
+		Container glassPane = (Container) this.getGlassPane();
+		glassPane.setLayout(null);
+		glassPane.setVisible(true);
+		return glassPane;
+	}
+
+	private JPanel createOverlayPanel(int x, int y, int panelWidth, int panelHeight) {
+		JPanel panel = new JPanel(null);
+		Border outerBorder = BorderFactory.createLineBorder(PANEL_BORDER, 3);
+		Border innerPadding = new EmptyBorder(12, 12, 12, 12);
+		panel.setBorder(new CompoundBorder(outerBorder, innerPadding));
+		panel.setBackground(PANEL_BACKGROUND);
+		panel.setBounds(x, y, panelWidth, panelHeight);
+		panel.setOpaque(true);
+		return panel;
 	}
 
 	private void createDifficultyActionListener(JRadioButton button, int level) {
@@ -144,6 +187,8 @@ public class gameBoard extends JFrame {
 		label.setForeground(colorForeGround);
 		label.setBorder(border);
 		label.setLayout(layout);
+		label.setOpaque(Opaque);
+		label.setFocusable(focusable);
 		return label;
 	}
 
@@ -155,6 +200,22 @@ public class gameBoard extends JFrame {
 		button.setOpaque(Opaque);
 		button.setForeground(colorForeGround);
 		button.setFont(buttonFont);
+		button.setBorder(BorderFactory.createLineBorder(PANEL_BORDER, 2));
+		button.setFocusPainted(false);
+		button.setMargin(new Insets(0, 0, 0, 0));
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				button.setBackground(CONTROL_HOVER_BACKGROUND);
+				button.setBorder(BorderFactory.createLineBorder(CONTROL_HOVER_BORDER, 2));
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				button.setBackground(colorBackGround);
+				button.setBorder(BorderFactory.createLineBorder(PANEL_BORDER, 2));
+			}
+		});
 		return button;
 	}
 
@@ -166,39 +227,14 @@ public class gameBoard extends JFrame {
 		button.setOpaque(Opaque);
 		button.setForeground(colorForeGround);
 		button.setFont(buttonFont);
+		button.setBorder(BorderFactory.createLineBorder(PANEL_BORDER));
+		button.setFocusPainted(false);
+		button.setHorizontalAlignment(SwingConstants.CENTER);
 		return button;
 	}
-	
-	public void exploded() {
-		
-		this.setGlassPane(new JComponent() {
-			
-			protected void paintComponent(Graphics g) {
-				g.setColor(new Color(0,0,0, 220)); 		// 150 
-				g.fillRect(0, 0, width, height);
-			}
-		});
-		
-		Color color1 = new Color(0,0,0,100);
-		Font buttonFont = new Font("Times New Roman", Font.BOLD, 25);
-		Border border = BorderFactory.createLineBorder(Color.darkGray);
 
-		Container glassPane = (Container) this.getGlassPane();
-		glassPane.setVisible(true);
-		JButton playAgain = this.createJButton("Play Again?",color1,Color.WHITE,buttonFont,false,false,140,680,240,120);
-		playAgain.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource() == playAgain) {
-					clearBoard();
-				}
-			}
-		});
-		
-		JLabel label = createJLabel("You Lost!", color1, Color.RED, buttonFont, false,false,border,null,140,40,240,40);
-		
-		glassPane.add(label);
-		glassPane.add(playAgain);
+	public void exploded() {
+		showResultScreen("You Lost!", "The field is cleared for another run.", LOSS_COPY_COLOR);
 	}
 
 	public void reset() {
@@ -211,20 +247,13 @@ public class gameBoard extends JFrame {
 	}
 	
 	public void win() {
-		Color color1 = new Color(0,0,0,100);
-		Font buttonFont = new Font("Times New Roman", Font.BOLD, 25);
-		Border border = BorderFactory.createLineBorder(Color.darkGray);
-		this.setGlassPane(new JComponent() {
-			
-			protected void paintComponent(Graphics g) {
-				g.setColor(new Color(0,0,0, 220)); 		// 150 
-				g.fillRect(0, 0, width, height);
-			}
-		});
-		
-		Container glassPane = (Container) this.getGlassPane();
-		glassPane.setVisible(true);
-		JButton playAgain = this.createJButton("Play Again?",color1,Color.WHITE,buttonFont,false,false,140,680,240,120);
+		showResultScreen("You Win!", "Nice sweep. Ready for another board?", WIN_COPY_COLOR);
+	}
+
+	private void showResultScreen(String title, String message, Color titleColor) {
+		Container glassPane = createOverlayGlassPane();
+		JPanel resultPanel = createOverlayPanel(60, 290, 400, 320);
+		JButton playAgain = this.createJButton("Play Again?", CONTROL_BACKGROUND, COPY_COLOR, BUTTON_FONT, true, false, 80, 190, 240, 82);
 		playAgain.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -234,9 +263,12 @@ public class gameBoard extends JFrame {
 			}
 		});
 
-		JLabel label = createJLabel("You Win!", color1, Color.GREEN, buttonFont, false,false,border,null,140,40,240,40);
-		glassPane.add(label);
-		glassPane.add(playAgain);
+		JLabel label = createJLabel(title, PANEL_BACKGROUND, titleColor, TITLE_FONT, true, false, null, null, 20, 48, 360, 42);
+		JLabel subLabel = createJLabel(message, PANEL_BACKGROUND, SUPPORT_COPY_COLOR, BODY_FONT, true, false, null, null, 20, 104, 360, 34);
+		resultPanel.add(label);
+		resultPanel.add(subLabel);
+		resultPanel.add(playAgain);
+		glassPane.add(resultPanel);
 	}
 	
 	public void clearBoard() {
