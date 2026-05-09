@@ -8,15 +8,16 @@ public class ProgressBombs extends JProgressBar{
 	private int bombs,max;
 	
 	ProgressBombs(int bombs) {
-		new JProgressBar(0,bombs);
 		this.bombs = bombs;
 		this.max=bombs;
+		setMinimum(0);
+		setMaximum(bombs);
 		setBounds(20,0,120,30);
 		setStringPainted(true);
 		setFont(new Font("Times New Roman", Font.BOLD, 25));
 		setBackground(Color.black);
 		setForeground(Color.black);
-		setValue(0);
+		setValue(bombs);
 		setString(String.valueOf(bombs));
 	}
 	
@@ -26,6 +27,7 @@ public class ProgressBombs extends JProgressBar{
 		} else {
 		
 		bombs--;
+		setValue(bombs);
 		setString(String.valueOf(bombs));
 		}
 	}
@@ -33,6 +35,8 @@ public class ProgressBombs extends JProgressBar{
 	void resetBar(int bombs) {
 		this.bombs = bombs;
 		this.max=bombs;
+		setMaximum(bombs);
+		setValue(bombs);
 		setString(String.valueOf(bombs));
 	}
 	
@@ -41,6 +45,7 @@ public class ProgressBombs extends JProgressBar{
 			
 		} else {
 		bombs++;
+		setValue(bombs);
 		setString(String.valueOf(bombs));
 		}
 	}

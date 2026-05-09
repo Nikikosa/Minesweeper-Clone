@@ -64,6 +64,7 @@ public class Cube extends JPanel implements ActionListener{
 		uncovered = false;
 		isFlagged = false;
 		clicked = false;
+		pressedBomb = 0;
 		board = null;
 		
 		remove(button);
@@ -169,6 +170,10 @@ public class Cube extends JPanel implements ActionListener{
 	public boolean bombStatus() {
 		return this.isBomb;
 	}
+
+	public boolean isUncovered() {
+		return this.uncovered;
+	}
 	
 	public void setType() {
 		counter=0;
@@ -185,6 +190,9 @@ public class Cube extends JPanel implements ActionListener{
 		
 	}
 	public void uncover() {
+		if(this.isFlagged) {
+			return;
+		}
 		if (this.isBomb==true) {
 			if (pressedBomb==1) {
 				this.button.setIcon(pressedBombImage);
@@ -239,6 +247,9 @@ public class Cube extends JPanel implements ActionListener{
 	}
 
 	public void removeBlanks(Cube alpha) {
+		if(this.isFlagged) {
+			return;
+		}
 		alpha.button.setIcon(blank);
 		for (int i =0; i < 8 ; i++) {
 			if (neighbors[i]!=null && !neighbors[i].bombStatus())  {
@@ -252,6 +263,9 @@ public class Cube extends JPanel implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource()==button) {
+			if(this.isFlagged) {
+				return;
+			}
 			if (!clicked) {
 			button.setVisible(false);
 			if (isFlagged == true) {
@@ -266,6 +280,7 @@ public class Cube extends JPanel implements ActionListener{
 				
 			} else {
 				uncover();
+				manager.checkWin();
 			}
 			button.setVisible(true);
 			clicked=true;

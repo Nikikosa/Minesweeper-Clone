@@ -147,18 +147,14 @@ public class CubeManager {
         }
     }
 
-    public void checkWin(int difficulty) {
-        int numOfBombs = getNumOfBombs();
-        int counter = 0;
-        for (Cube cell : this.bombList) {
-            if (cell.isFlagged) {
-                counter++;
+    public void checkWin() {
+        for (Cube cell : this.cellList) {
+            if (!cell.bombStatus() && !cell.isUncovered()) {
+                return;
             }
         }
 
-        if (counter == numOfBombs) {
-            this.board.win();
-        }
+        this.board.win();
     }
 
 
@@ -193,7 +189,7 @@ public class CubeManager {
             this.numOfBombsRemaining--;
         }
         if (this.numOfBombsRemaining == 0) {
-            this.checkWin(this.difficulty);
+            this.checkWin();
         }
     }
 
