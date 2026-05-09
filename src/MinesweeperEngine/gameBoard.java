@@ -91,6 +91,9 @@ public class gameBoard extends JFrame {
 		group.add(easy);   // these 3 buttons are added to the group
 		group.add(medium);
 		group.add(hard);
+		easy.setSelected(difficulty == 1);
+		medium.setSelected(difficulty == 2);
+		hard.setSelected(difficulty == 3);
 
 		createDifficultyActionListener(easy,1);
 		createDifficultyActionListener(medium,2);
@@ -204,7 +207,7 @@ public class gameBoard extends JFrame {
 	}
 
 	public void checkWin() {
-		this.cubeManager.checkWin(difficulty);
+		this.cubeManager.checkWin();
 	}
 	
 	public void win() {

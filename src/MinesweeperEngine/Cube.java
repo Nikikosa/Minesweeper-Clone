@@ -64,6 +64,7 @@ public class Cube extends JPanel implements ActionListener{
 		uncovered = false;
 		isFlagged = false;
 		clicked = false;
+		pressedBomb = 0;
 		board = null;
 		
 		remove(button);
@@ -168,6 +169,10 @@ public class Cube extends JPanel implements ActionListener{
 
 	public boolean bombStatus() {
 		return this.isBomb;
+	}
+
+	public boolean isUncovered() {
+		return this.uncovered;
 	}
 	
 	public void setType() {
@@ -275,6 +280,7 @@ public class Cube extends JPanel implements ActionListener{
 				
 			} else {
 				uncover();
+				manager.checkWin();
 			}
 			button.setVisible(true);
 			clicked=true;
